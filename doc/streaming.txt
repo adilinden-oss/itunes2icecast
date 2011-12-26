@@ -1,0 +1,123 @@
+$Id: streaming.txt,v 1.4 2008-01-26 18:03:51 adicvs Exp $
+
+Music Streaming
+***************
+
+Concept
+=======
+o Collection of mp3 and m4a files
+o Static playlist
+o Transcode on the fly
+o Stream using icecast
+
+Future
+------
+o Dynamic playlist(s)
+
+
+Silent MP3
+----------
+dd bs=44100 count=5 if=/dev/zero | lame -b 128 -s 44.1 - silence.mp3
+
+
+Software
+========
+
+PHP5
+----
+Signal handlers are required for daemonized stream.php.
+
+    --enable-pcntl
+    --enable-sigchild
+    --enable-posix
+
+Prerequisites
+-------------
+    apt-get install libtool autoconf automake automake1.9
+
+Ogg Vorbis
+----------
+    apt-get install libogg-dev libvorbis-dev
+
+libxml
+------
+    apt-get install libxml-dev libxml2-dev
+
+mpg321
+------
+    apt-get install mpg321
+
+libshout
+--------
+    apt-get install libshout-dev
+	
+libtag
+------
+    apt-get install libtagc0-dev	
+
+icecast
+-------
+    apt-get install icecast2
+
+faad
+----
+    tar xzf faad2-2.6.1.tar.gz
+    cd faad2
+    autoreconf -vif
+    ./configure --with-mp4v2 --without-xmms
+    make
+    make install
+
+lame
+----
+    tar xzf lame-3.97.tar.gz
+    cd lame-3.97
+    ./configure
+    make
+    make install
+
+ezstream
+--------
+    tar xzf ezstream-0.5.3.tar.gz    
+    cd ezstream-0.5.3
+    ./configure
+    make
+    make install
+
+
+Configuration
+=============
+
+icecast
+-------
+read /etc/default/icecast2 and /etc/icecast2/icecast2.xml
+
+ezstream
+--------
+Configuration with simple playlist and transcoding for m4a and mp3.
+
+<ezstream>
+  <url>http://localhost:8000/stream</url>
+  <sourcepassword>pfiff</sourcepassword>
+
+  <format>MP3</format>
+  <!--<filename>stdin</filename>-->
+  <filename>play.txt</filename>
+
+  <reencode>
+    <enable>1</enable>
+    <encdec>
+      <format>M4A</format>
+      <match>.m4a</match>
+      <decode>faad -w -f 2 "@T@" 2>/dev/null</decode>
+      <encode>lame --preset cbr 96 -r -x -s 44.1 --bitwidth 16 - -</encode>
+    </encdec>
+    <encdec>
+      <format>MP3</format>
+      <match>.mp3</match>
+      <decode>mpg321 "@T@" -w - 2>/dev/null</decode>
+      <encode>lame --preset cbr 96 -r -x -s 44.1 --bitwidth 16 - -</encode>
+    </encdec>
+  </reencode>
+</ezstream>
+

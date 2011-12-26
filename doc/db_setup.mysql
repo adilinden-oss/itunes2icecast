@@ -1,0 +1,59 @@
+# $Id: db_setup.mysql,v 1.10 2008-02-01 04:32:50 adicvs Exp $
+#
+# Create streaming database and tables.
+#
+
+# The user
+GRANT select,insert,update,delete,alter ON streaming.*
+  TO streaming@localhost IDENTIFIED BY '1ujtBDCZtmlTUB1j';
+
+DROP DATABASE streaming;
+CREATE DATABASE streaming;
+USE streaming;
+
+# The tracks table
+CREATE TABLE tracks (
+  track_id bigint(8) UNSIGNED NOT NULL,
+  name varchar(255) NOT NULL,
+  artist varchar(255) NOT NULL,
+  album varchar(255) NOT NULL,
+  genre varchar(255) NOT NULL,
+  track int(4) NOT NULL,
+  size int(4) NOT NULL,
+  time int(4) NOT NULL,
+  location text NOT NULL,
+  path text NOT NULL,
+  PRIMARY KEY (track_id)
+) TYPE=MyISAM COMMENT='Tracks';
+
+# The playlists tables
+CREATE TABLE lists (
+  list_id bigint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  itunes tinyint(1) NOT NULL,
+  parent_id bigint(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (list_id)
+) TYPE=MyISAM COMMENT='Playlists';
+
+CREATE TABLE lists_arrays (
+  array_id bigint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  list_id bigint(8) UNSIGNED NOT NULL,
+  track_id bigint(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (array_id)
+) TYPE=MyISAM COMMENT='Playlists Tracks';
+
+# The queue table
+CREATE TABLE queue (
+  queue_id bigint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  track_id bigint(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (queue_id)
+) TYPE=MyISAM COMMENT='Queue';
+
+# The status table
+CREATE TABLE status (
+  play_now_track_id bigint(8) UNSIGNED NOT NULL,
+  play_now_queue_id bigint(8) UNSIGNED NOT NULL,
+  play_next_queue_id bigint(8) UNSIGNED NOT NULL,
+  play_random tinyint(1) NOT NULL
+) TYPE=MyISAM COMMENT='Status';
+

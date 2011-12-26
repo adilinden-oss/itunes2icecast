@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# Start the streamer source
+#
+### BEGIN INIT INFO
+# Provides: stream
+# Required-Start: mysql
+# Required-Stop: mysql
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Streaming daemon
+# Description: Enable service provided by straeming daemon.
+### END INIT INFO
+#
+# Install file as /etc/init.d/stream and add at system start using
+# update-rc.d stream defaults 55
+#
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+DAEMON=/usr/local/bin/php
+SCRIPTDIR=/var/www/streaming/stream-exec
+SCRIPT=stream.php
+PIDFILE=/var/run/stream.php.pid
+USER='www-data'
+SCRIPT_ARGS="-d -u $USER"
+
+test -x $DAEMON -a -f $SCRIPTDIR/$SCRIPT  || exit 0
+
+
+# Make sure pid file is writeable
+touch $PIDFILE
+chown $USER $PIDFILE
+
+case "$1" in
+  start)
+    echo -n "Starting stream source: ${SCRIPT} "
+    if start-stop-daemon --quiet --stop --pidfile $PIDFILE --signal 0 --chdir $SCRIPTDIR --exec $DAEMON
+    then
+        echo "[already running]"
+    else
+        /sbin/start-stop-daemon --start --quiet --pidfile $PIDFILE --chdir $SCRIPTDIR --exec $DAEMON -- $SCRIPT $SCRIPT_ARGS
+        echo "."
+    fi
+    ;;
+  stop)
+    echo -n "Stopping stream source: ${SCRIPT} "
+    if start-stop-daemon --quiet --stop --pidfile $PIDFILE --chdir $SCRIPTDIR --signal 0 --exec $DAEMON
+    then
+        start-stop-daemon --quiet --stop --pidfile $PIDFILE --chdir $SCRIPTDIR --exec $DAEMON 
+        echo "."
+    else
+        echo "[not running]";
+    fi
+    ;;
+  status)
+    echo -n "The stream source [$SCRIPT] is: "
+    if start-stop-daemon --quiet --stop --pidfile $PIDFILE --signal 0 --chdir $SCRIPTDIR --exec $DAEMON
+    then
+        echo "running"
+    else
+        echo "not running";
+    fi
+    ;;
+  force-reload|restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/stream {start|stop|restart|force-reload|status}"
+    exit 1
+esac
+
+exit 0
+

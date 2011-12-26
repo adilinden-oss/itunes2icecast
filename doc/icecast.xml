@@ -1,0 +1,77 @@
+<icecast>
+    <limits>
+        <clients>100</clients>
+        <sources>4</sources>
+        <threadpool>5</threadpool>
+        <queue-size>524288</queue-size>
+        <client-timeout>30</client-timeout>
+        <header-timeout>15</header-timeout>
+        <source-timeout>10</source-timeout>
+        <burst-on-connect>0</burst-on-connect>
+        <burst-size>65535</burst-size>
+    </limits>
+
+    <authentication>
+        <source-password>pfiff</source-password>
+        <relay-password>pfiff</relay-password>
+
+        <!-- Admin logs in with the username given below -->
+        <admin-user>admin</admin-user>
+        <admin-password>pfiff</admin-password>
+    </authentication>
+
+    <hostname>debian</hostname>
+
+    <listen-socket>
+        <port>8000</port>
+    </listen-socket>
+
+    <!-- Using mount to support fallback. Place the fallback files
+         silence-96k.mp3 and silence-128k.mp3 in /usr/share/icecast2/web -->
+    <mount>
+        <mount-name>/96</mount-name>
+        <fallback-mount>/silence-96k.mp3</fallback-mount>
+        <fallback-override>1</fallback-override>
+        <max-listeners>10</max-listeners>
+    </mount>
+    <mount>
+        <mount-name>/128</mount-name>
+        <fallback-mount>/silence-128k.mp3</fallback-mount>
+        <fallback-override>1</fallback-override>
+		<max-listeners>10</max-listeners>
+    </mount>
+
+    <fileserve>1</fileserve>
+
+    <paths>
+        <basedir>/usr/share/icecast2</basedir>
+        <logdir>/var/log/icecast2</logdir>
+        <webroot>/usr/share/icecast2/web</webroot>
+        <adminroot>/usr/share/icecast2/admin</adminroot>
+        <!-- <pidfile>/usr/share/icecast2/icecast.pid</pidfile> -->
+        <alias source="/" dest="/status.xsl"/>
+    </paths>
+
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+      	<loglevel>3</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+      	<logsize>10000</logsize> <!-- Max size of a logfile -->
+        <!-- If logarchive is enabled (1), then when logsize is reached
+             the logfile will be moved to [error|access|playlist].log.DATESTAMP,
+             otherwise it will be moved to [error|access|playlist].log.old.
+             Default is non-archive mode (i.e. overwrite)
+        -->
+        <!-- <logarchive>1</logarchive> -->
+    </logging>
+
+    <security>
+        <chroot>0</chroot>
+        <!--
+        <changeowner>
+            <user>icecast2</user>
+            <group>icecast</group>
+        </changeowner>
+        -->
+    </security>
+</icecast>

@@ -1,0 +1,109 @@
+/* $Id: stylesheet.css,v 1.5 2009-05-26 00:24:58 adicvs Exp $ */
+
+* {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+body {
+    background: #ffffff;
+    color: #000000;
+}
+
+a {
+    text-decoration: none;
+    color: #0000ff;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0000ff;
+}
+
+a:visited, a:active {
+    color: #0000ff;
+}
+
+.error_msg {
+    color: #d01313;
+    font-weight: bold;
+}
+
+/* Container */
+#container {
+    width: 90%;
+}
+
+/* List tables */
+#tracks, #queue, #playlist {
+    margin-left: 150px;
+    margin-right: 0px;
+    width: 850px;
+    text-align: left;
+}
+
+#tracks h4, #queue h4, #playlist h4 {
+    display: inline;
+    font-size: 115%;
+    font-weight: bold;
+}
+
+#tracks_table, #queue_table, #playlist_table {
+    margin: 0px auto;
+    width: 850px;
+    /* border: 1px solid #aaaaaa; */
+}
+
+#tracks_table .header, #queue_table .header, #playlist_table .header {
+    line-height: 20px;
+    background: #eeeeee;
+    font-weight: bold;
+}
+
+#tracks_table .hiliteoff, #queue_table .hiliteoff, #playlist_table .hiliteoff {
+    background: #ffffff;
+}
+
+#tracks_table .hiliteon, #queue_table .hiliteon, #playlist_table .hiliteon {
+    background: #d9ff43;
+}
+
+#tracks_table .hiliteplayoff, #queue_table .hiliteplayoff, #playlist_table .hiliteplayoff {
+    background: #ffcccc;
+}
+
+#tracks_table .hiliteplayon, #queue_table .hiliteplayon, #playlist_table .hiliteplayon {
+    background: #d9ff43;
+}
+
+/* Sidebar Menu */
+.leftbar {
+    float: left;
+    clear: left;
+    width: 120px;
+    padding: 5px;
+    background: #eeeeee;
+}
+
+ul.toc {
+    margin: 0px 5px 5px 5px;
+    padding: 0px;
+}
+ul.toc li {
+    margin: 1px 0 1px 1px;
+    padding: 1px 0 1px 11px;
+    list-style-type: none;
+}
+ul.toc li.header {
+    /* font-size: 115%; */
+    font-weight: bold;
+    padding: 5px 0px 5px 11px;
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 5px;
+}
+ul.toc li a {
+    text-decoration: none;
+}
+ul.toc li a:hover {
+    text-decoration: underline;
+}

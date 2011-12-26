@@ -1,0 +1,28 @@
+<ezstream>
+    <url>{URL}</url>
+    <!-- <sourceuser>{USER}</sourceuser> -->
+    <sourcepassword>{PASSWORD}</sourcepassword>
+
+    <format>MP3</format>
+    <filename>{PATH}</filename>
+    <stream_once>1</stream_once>
+
+    <reencode>
+        <enable>1</enable>
+	<encdec>
+	    <format>M4A</format>
+	    <match>.m4a</match>
+	    <decode>faad -w -f 2 "@T@" 2>/dev/null</decode>
+	    <encode>lame --preset cbr {BITRATE} -r -x -s 44.1 --bitwidth 16 - - {QUIET}</encode>
+        </encdec>
+	<encdec>
+	    <format>MP3</format>
+	    <match>.mp3</match>
+	    <decode>mpg321 "@T@" -w - 2>/dev/null</decode>
+	    <encode>lame --preset cbr {BITRATE} -r -x -s 44.1 --bitwidth 16 - - {QUIET}</encode>
+	</encdec>
+    </reencode>
+
+    <metadata_progname>{META}</metadata_progname>
+    <metadata_format>@s@: @a@ - @t@</metadata_format>
+</ezstream>
